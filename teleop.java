@@ -16,12 +16,13 @@ public class CaptainsCup extends OpMode {
     DcMotor FR;
     DcMotor BL;
     DcMotor BR;
+    DcMotor flywheel;
+    private static final double SHOOT_POWER = 1.0; // Tune from 0.0 to 1.0 on the robot.
 
     float LeftStick_x;
     float LeftStick_y;
     float RightStick_x;
 
-    GoBildaPinpointDriver pinpoint;
 
 
     boolean Up;
@@ -29,9 +30,6 @@ public class CaptainsCup extends OpMode {
     boolean B;
     boolean Left;
     boolean Right;
-    //nice naming conventions, really easy to read for an unfamiliar teammate (me)
-    int Position = 1; //Based on starting Position: 1 is Blue Far, 2 is Blue Near, 3 is Red Far, 4 is Red Near
-    //Nice commenting!!
 
     public void init(){
         DcMotor FL = hardwareMap.get(DcMotor.class, "FL");
@@ -39,23 +37,11 @@ public class CaptainsCup extends OpMode {
         DcMotor BL = hardwareMap.get(DcMotor.class, "BL");
         DcMotor BR = hardwareMap.get(DcMotor.class, "BR");
 
-        GoBildaPinpointDriver pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
-        pinpoint.setOffsets(18,18, DistanceUnit.CM);
-        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        if (Position == 1 || Position == 2) {
-            pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        }
-        if (Position == 3 || Position == 4) {
-            pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        }
+        flywheel = hardwareMap.get(DcMotor.class, "flywheel");
+        flywheel.setPower(0.0);
+        flywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        pinpoint.resetPosAndIMU();
-        if (Position == 1 || Position == 3){
-            Pose2D startingPosition = new Pose2D(DistanceUnit.INCH, 48, 12, AngleUnit.DEGREES, 0);
-        }
-        if (Position == 2 || Position == 4) {
-            Pose2D startingPosition = new Pose2D(DistanceUnit.INCH, 22, 122, AngleUnit.DEGREES, 135);
-        }
 
         float LeftStick_x = gamepad1.left_stick_x;
         float LeftStick_y = gamepad1.left_stick_y;
@@ -74,6 +60,27 @@ public class CaptainsCup extends OpMode {
         FR.setPower(-LeftStick_x + LeftStick_y - RightStick_x);
         BL.setPower(LeftStick_x + LeftStick_y + RightStick_x);
         BR.setPower(-LeftStick_x + LeftStick_y - RightStick_x);
+
+        @Override
+        public void loop(){
+            LeftStick_x = gamepad1.left_stick_x;
+            LeftStick_y = gamepad1.left_stick_y;
+            RightStick_x = gamepad1.right_stick_x;
+            Drive();
+
+            // Hold gamepad 1's right bumper to shoot; release to cut power.
+            // The flywheel coasts down after power is removed.
+            flywheel.setPower(gamepad1.right_bumper ? SHOOT_POWER : 0.0);
+        }
+
+        @Override
+        public void stop(){
+            flywheel.setPower(0.0);
+            FL.setPower(0.0);
+            FR.setPower(0.0);
+            BL.setPower(0.0);
+            BR.setPower(0.0);
+        }
     }
 
     public void loop(){
