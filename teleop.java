@@ -27,11 +27,11 @@ public class CaptainsCup extends OpMode {
 
 
 
-    boolean Up;
-    boolean A;
-    boolean B;
-    boolean Left;
-    boolean Right;
+//    boolean Up;
+//    boolean A;
+//    boolean B;
+//    boolean Left;
+//    boolean Right;
     boolean Right_Bumper;
 
     public void init(){
@@ -55,12 +55,12 @@ public class CaptainsCup extends OpMode {
         float LeftStick_x = gamepad1.left_stick_x;
         float LeftStick_y = gamepad1.left_stick_y;
         float RightStick_x = gamepad1.right_stick_x;
-        float LeftTrigger = gamepad1.left_trigger;
-        boolean A = gamepad1.a;
-        boolean B = gamepad1.b;
-        boolean Up = gamepad1.dpad_up;
-        boolean Left = gamepad1.dpad_left;
-        boolean right = gamepad1.dpad_right;
+//        float LeftTrigger = gamepad1.left_trigger;
+//        boolean A = gamepad1.a;
+//        boolean B = gamepad1.b;
+//        boolean Up = gamepad1.dpad_up;
+//        boolean Left = gamepad1.dpad_left;
+//        boolean right = gamepad1.dpad_right;
         boolean Right_Bumber = gamepad1.dpad_right_bumber;
 
     }
@@ -74,7 +74,7 @@ public class CaptainsCup extends OpMode {
 
         public void shoot(){
             while (opModeIsActive()) {
-                if (gamepad1.right_bumper) {
+                if (Right_Bumper) {
                     flywheel.setPower(1.0);
                     intakeServo.setPosition(.25);
                 } else {
