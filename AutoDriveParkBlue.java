@@ -95,13 +95,13 @@ public class AutoDrivePark extends OpMode {
                     Step += 1;}}
 
             if (Step == 4) {
-                while (heading != Math.toRadians(90)) {
+                while (heading != Math.toRadians(270)) {
                     FL.setPower(-0.5);
                     FR.setPower(0.5);
                     BL.setPower(-0.5);
                     BR.setPower(0.5);}
 
-                if (heading == Math.toRadians(90)) {
+                if (heading == Math.toRadians(270)) {
                     FL.setPower(0);
                     FR.setPower(0);
                     BL.setPower(0);
