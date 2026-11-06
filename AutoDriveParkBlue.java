@@ -39,7 +39,7 @@ public class AutoDrivePark extends OpMode {
         //change offsets: where odo pods are in relation to bot center
 
         GoBildaPinpointDriver pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
-        pinpoint.setOffsets(18,18, DistanceUnit.CM);
+        pinpoint.setOffsets(0,17.5, DistanceUnit.CM);
         pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
